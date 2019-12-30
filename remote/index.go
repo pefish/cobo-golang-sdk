@@ -23,6 +23,8 @@ type Remote struct {
 	PubKey    string
 }
 
+var RemoteInstance *Remote
+
 func (this *Remote) sign(method string, apiPath string, params map[string]interface{}) (sig string, apiNonce string) {
 	sortedStr := ``
 	var keys []string
