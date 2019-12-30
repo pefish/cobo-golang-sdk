@@ -70,3 +70,15 @@ func (this *Remote) GetFinishedTxInfo(id string) FinishedTxInfo {
 	go_format.Format.MapToStruct(result.(map[string]interface{}), &txInfo)
 	return txInfo
 }
+
+func (this *Remote) Withdraw(coin string, requestId string, address string, amount string, memo string) {
+	apiPath := `/v1/custody/new_withdraw_request/`
+	params := map[string]interface{}{
+		`coin`:       coin,
+		`request_id`: requestId,
+		`address`:    address,
+		`amount`:     amount,
+		`memo`:       memo,
+	}
+	this.post(apiPath, params)
+}
