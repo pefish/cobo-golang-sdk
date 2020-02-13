@@ -87,8 +87,11 @@ func (this *Remote) post(apiPath string, params map[string]interface{}) interfac
 	if !isValidRequest {
 		go_error.ThrowInternalError(`cobo response signature verify error`, nil)
 	}
-	go_logger.Logger.Debug(`verify post request sucess, param: `, body)
-	result := go_json.Json.Parse(body).(map[string]interface{})
+	bodyJson, err := go_json.Json.Parse(body)
+	if err != nil {
+		go_error.ThrowInternalError(`parse body error`, err)
+	}
+	result := bodyJson.(map[string]interface{})
 	if result[`success`].(bool) != true {
 		go_error.Throw(result[`error_message`].(string)+result[`error_description`].(string), go_reflect.Reflect.MustToUint64(result[`error_code`].(float64)))
 	}
@@ -112,8 +115,11 @@ func (this *Remote) get(apiPath string, params map[string]interface{}) interface
 	if !isValidRequest {
 		go_error.ThrowInternalError(`cobo response signature verify error`, nil)
 	}
-	go_logger.Logger.Debug(`verify get request sucess, param: `, body)
-	result := go_json.Json.Parse(body).(map[string]interface{})
+	bodyJson, err := go_json.Json.Parse(body)
+	if err != nil {
+		go_error.ThrowInternalError(`parse body error`, err)
+	}
+	result := bodyJson.(map[string]interface{})
 	if result[`success`].(bool) != true {
 		go_error.Throw(`cobo response error: `+result[`error_message`].(string)+result[`error_description`].(string), go_reflect.Reflect.MustToUint64(result[`error_code`].(float64)))
 	}
